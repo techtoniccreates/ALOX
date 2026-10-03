@@ -9,8 +9,8 @@ const tabs = ["overview", "orders", "wishlist", "profile", "addresses", "setting
 type Tab = (typeof tabs)[number];
 
 export const Route = createFileRoute("/account")({
-  validateSearch: (s: Record<string, unknown>): { tab?: Tab } => ({
-    tab: tabs.includes(s.tab as Tab) ? (s.tab as Tab) : undefined,
+  validateSearch: (s: Record<string, unknown>): { tab?: Tab | undefined } => ({
+    tab: tabs.includes(s["tab"] as Tab) ? (s["tab"] as Tab) : undefined,
   }),
   head: () => ({
     meta: [
@@ -25,8 +25,8 @@ export const Route = createFileRoute("/account")({
 });
 
 const orders = [
-  { id: "ALX-482193", date: "12 Sep 2026", status: "Delivered", items: [products[2]], total: 285 },
-  { id: "ALX-371046", date: "28 Jun 2026", status: "Delivered", items: [products[5], products[6]], total: 600 },
+  { id: "ALX-482193", date: "12 Sep 2026", status: "Delivered", items: [products[2]!], total: 285 },
+  { id: "ALX-371046", date: "28 Jun 2026", status: "Delivered", items: [products[5]!, products[6]!], total: 600 },
 ];
 
 function Account() {

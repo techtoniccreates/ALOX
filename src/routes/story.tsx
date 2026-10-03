@@ -19,7 +19,7 @@ export const Route = createFileRoute("/story")({
 const chapters = [
   { year: "2019", title: "The Beginning", img: editorial.craft, text: "ALOX began at a single workbench, with one bag and an obsession with proportion. Six months, forty prototypes, one final line." },
   { year: "2021", title: "The Vision", img: editorial.ed1, text: "A house built on restraint: objects that carry no logo but are recognisable by their form, their weight, their finish." },
-  { year: "2024", title: "The Evolution", img: products[1].images[0], text: "From leather goods to timepieces and fragrance — each new category held to the same question: what can be removed?" },
+  { year: "2024", title: "The Evolution", img: products[1]!.images[0], text: "From leather goods to timepieces and fragrance — each new category held to the same question: what can be removed?" },
   { year: "Next", title: "The Future", img: editorial.ed2, text: "Fewer, better collections. A lifetime repair programme. Materials traced from source to stitch." },
 ];
 

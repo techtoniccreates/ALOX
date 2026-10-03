@@ -39,7 +39,7 @@ function About() {
 
       <section className="container-lux grid items-center gap-10 pb-24 md:grid-cols-12 md:pb-36">
         <Reveal className="md:col-span-5 md:col-start-2">
-          <img src={products[0].images[0]} alt="Signature Bag in grained calfskin" loading="lazy" className="aspect-[4/5] w-full object-cover" />
+          <img src={products[0]!.images[0]} alt="Signature Bag in grained calfskin" loading="lazy" className="aspect-[4/5] w-full object-cover" />
         </Reveal>
         <Reveal className="md:col-span-4 md:col-start-8" delay={120}>
           <p className="eyebrow text-gold">Our Materials</p>
