@@ -51,21 +51,21 @@ function Checkout() {
 
   const validateInfo = () => {
     const e: Partial<Record<string, string>> = {};
-    if (!info.name.trim()) e.name = "Required";
-    if (!/^\S+@\S+\.\S+$/.test(info.email)) e.email = "Enter a valid email";
-    if (info.phone.replace(/\D/g, "").length < 7) e.phone = "Enter a valid phone";
-    if (!info.address.trim()) e.address = "Required";
-    if (!info.city.trim()) e.city = "Required";
-    if (!info.country.trim()) e.country = "Required";
+    if (!info.name.trim()) e["name"] = "Required";
+    if (!/^\S+@\S+\.\S+$/.test(info.email)) e["email"] = "Enter a valid email";
+    if (info.phone.replace(/\D/g, "").length < 7) e["phone"] = "Enter a valid phone";
+    if (!info.address.trim()) e["address"] = "Required";
+    if (!info.city.trim()) e["city"] = "Required";
+    if (!info.country.trim()) e["country"] = "Required";
     setErrors(e);
     return !Object.keys(e).length;
   };
   const validateCard = () => {
     const e: Partial<Record<string, string>> = {};
-    if (card.number.replace(/\s/g, "").length !== 16) e.number = "Enter 16 digits";
-    if (!/^\d{2}\/\d{2}$/.test(card.expiry)) e.expiry = "MM/YY";
-    if (!/^\d{3,4}$/.test(card.cvc)) e.cvc = "3–4 digits";
-    if (!card.holder.trim()) e.holder = "Required";
+    if (card.number.replace(/\s/g, "").length !== 16) e["number"] = "Enter 16 digits";
+    if (!/^\d{2}\/\d{2}$/.test(card.expiry)) e["expiry"] = "MM/YY";
+    if (!/^\d{3,4}$/.test(card.cvc)) e["cvc"] = "3–4 digits";
+    if (!card.holder.trim()) e["holder"] = "Required";
     setErrors(e);
     return !Object.keys(e).length;
   };

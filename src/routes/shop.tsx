@@ -7,12 +7,12 @@ import { cn } from "@/lib/utils";
 const filters = ["All", "New Arrivals", "Featured", "Accessories", "Lifestyle", "Leather Goods"] as const;
 const sorts = ["Featured", "Newest", "Price: Low to High", "Price: High to Low"] as const;
 
-type Search = { filter?: string; sort?: string; q?: string };
+type Search = { filter?: string | undefined; sort?: string | undefined; q?: string | undefined };
 
 export const Route = createFileRoute("/shop")({
   validateSearch: (s: Record<string, unknown>): Search => ({
-    filter: typeof s.filter === "string" ? s.filter : undefined,
-    sort: typeof s.sort === "string" ? s.sort : undefined,
+    filter: typeof s["filter"] === "string" ? s["filter"] : undefined,
+    sort: typeof s["sort"] === "string" ? s["sort"] : undefined,
     q: typeof s["q"] === "string" ? s["q"] : undefined,
   }),
   head: () => ({
