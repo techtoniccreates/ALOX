@@ -53,7 +53,7 @@ function Shop() {
       <PageHeading eyebrow="Shop" title="The Collection" sub="Explore the latest ALOX collection." />
       <div className="container-lux sticky top-16 z-30 border-y bg-background md:top-20">
         <div className="flex items-center justify-between gap-6 py-4">
-          <div className="-mx-1 flex gap-6 overflow-x-auto px-1 [scrollbar-width:none]">
+          <div className="-mx-1 flex min-w-0 flex-1 gap-6 overflow-x-auto px-1 [scrollbar-width:none]">
             {filters.map((f) => (
               <button key={f} onClick={() => set({ filter: f === "All" ? undefined : f })}
                 className={cn("eyebrow shrink-0 whitespace-nowrap pb-1 transition-colors", filter === f ? "border-b border-ink" : "text-muted-foreground hover:text-foreground")}>
@@ -61,7 +61,7 @@ function Shop() {
               </button>
             ))}
           </div>
-          <label className="flex shrink-0 items-center gap-2">
+          <label className="flex shrink-0 items-center gap-2 border-l pl-4">
             <span className="eyebrow hidden text-muted-foreground md:inline">Sort</span>
             <select value={sort} onChange={(e) => set({ sort: e.target.value })} className="eyebrow cursor-pointer bg-transparent outline-none">
               {sorts.map((s) => <option key={s}>{s}</option>)}

@@ -39,7 +39,7 @@ export function ProductCard({ product, priority }: { product: Product; priority?
           <Heart className={cn("h-4 w-4 transition-colors", wished ? "fill-gold text-gold" : "text-ink")} strokeWidth={1.25} />
         </button>
       </div>
-      <div className="mt-5 flex items-start justify-between gap-4">
+      <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div className="min-w-0">
           <h3 className="font-serif text-xl leading-tight">
             <Link to="/product/$slug" params={{ slug: product.slug }}>{product.name}</Link>
