@@ -4,7 +4,7 @@ import { ProductCard } from "@/components/site/ProductCard";
 import { PageHeading } from "@/components/site/PageHero";
 import { cn } from "@/lib/utils";
 
-const filters = ["All", "New Arrivals", "Featured", "Accessories", "Lifestyle", "Leather Goods"] as const;
+const filters = ["All", "New Arrivals", "Featured", "Clothing", "Footwear", "Leather Goods", "Accessories", "Lifestyle"] as const;
 const sorts = ["Featured", "Newest", "Price: Low to High", "Price: High to Low"] as const;
 
 type Search = { filter?: string | undefined; sort?: string | undefined; q?: string | undefined };
