@@ -22,6 +22,7 @@ export function Footer() {
           <ul className="space-y-3 text-sm opacity-80">
             <li><Link to="/shop" className="link-line">The Collection</Link></li>
             <li><Link to="/shop" search={{ filter: "New Arrivals" }} className="link-line">New Arrivals</Link></li>
+            <li><Link to="/stylist" className="link-line">The ALOX Stylist</Link></li>
             <li><Link to="/cart" className="link-line">Your Bag</Link></li>
           </ul>
         </div>
