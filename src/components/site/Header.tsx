@@ -32,7 +32,7 @@ export function Header() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate({ to: "/shop", search: { q: q.trim() || undefined } });
+    navigate({ to: "/shop", search: q.trim() ? { q: q.trim() } : {} });
   };
 
   return (

@@ -32,7 +32,7 @@ function ProductPage() {
   const { add, wishlist, toggleWish } = useStore();
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
-  const [option, setOption] = useState(p.options.values[0]);
+  const [option, setOption] = useState<string>(p.options.values[0] ?? "");
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [openTab, setOpenTab] = useState<string | null>("Product Details");
@@ -45,7 +45,7 @@ function ProductPage() {
     setTimeout(() => setAdded(false), 2200);
   };
 
-  const sections = [
+  const sections: [string, string][] = [
     ["Product Details", p.description],
     ["Material & Care", `${p.material} ${p.care}`],
     ["Shipping & Returns", "Complimentary delivery on orders over £500. Returns accepted within 30 days in original condition. Each piece arrives in ALOX signature packaging."],

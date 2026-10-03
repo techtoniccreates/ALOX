@@ -13,7 +13,7 @@ export const Route = createFileRoute("/shop")({
   validateSearch: (s: Record<string, unknown>): Search => ({
     filter: typeof s.filter === "string" ? s.filter : undefined,
     sort: typeof s.sort === "string" ? s.sort : undefined,
-    q: typeof s.q === "string" ? s.q : undefined,
+    q: typeof s["q"] === "string" ? s["q"] : undefined,
   }),
   head: () => ({
     meta: [
