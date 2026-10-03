@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Minus, Plus } from "lucide-react";
 import { formatPrice, getProduct } from "@/lib/products";
-import { shippingFor, SHIPPING_THRESHOLD, useStore } from "@/lib/store";
+import { shippingFor, useStore } from "@/lib/store";
+import { OrderSummary } from "@/components/site/OrderSummary";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
@@ -66,20 +67,5 @@ function Cart() {
         </div>
       )}
     </section>
-  );
-}
-
-export function OrderSummary({ subtotal, shipping, children }: { subtotal: number; shipping: number; children?: React.ReactNode }) {
-  return (
-    <aside className="self-start bg-ivory p-8 lg:sticky lg:top-28 lg:col-span-4">
-      <h2 className="eyebrow">Order Summary</h2>
-      <dl className="mt-8 space-y-4 text-sm">
-        <div className="flex justify-between"><dt>Subtotal</dt><dd className="tabular-nums">{formatPrice(subtotal)}</dd></div>
-        <div className="flex justify-between"><dt>Shipping</dt><dd className="tabular-nums">{shipping === 0 ? "Complimentary" : formatPrice(shipping)}</dd></div>
-        <div className="flex justify-between border-t border-ink/15 pt-4 text-base"><dt>Total</dt><dd className="tabular-nums">{formatPrice(subtotal + shipping)}</dd></div>
-      </dl>
-      {shipping > 0 && <p className="mt-4 text-xs text-muted-foreground">Complimentary shipping on orders over {formatPrice(SHIPPING_THRESHOLD)}.</p>}
-      {children}
-    </aside>
   );
 }
