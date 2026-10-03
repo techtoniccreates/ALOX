@@ -8,3 +8,8 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Architecture
+- Cart and wishlist live in a React context persisted to localStorage (src/lib/store.tsx) — portfolio demo, no backend needed.
+- Product catalogue is static data in src/lib/products.ts — single source for shop, product pages and cart.
+- Brand styles (buttons, fields, eyebrow labels) are Tailwind @utility classes in src/styles.css — keeps components token-only.
