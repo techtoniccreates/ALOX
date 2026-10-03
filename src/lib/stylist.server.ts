@@ -22,7 +22,7 @@ function runIdFetch() {
 }
 
 export async function recommend(input: StylistInput): Promise<StylistResult> {
-  const apiKey = process.env.LOVABLE_API_KEY;
+  const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) return { ok: false, error: "The stylist is not configured yet." };
 
   const catalog = products
