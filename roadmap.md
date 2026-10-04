@@ -1,7 +1,7 @@
 # Roadmap
-- [ ] Enable Cloud; sign in / sign up page (email + Google), header reflects session
-- [ ] Require sign-in at checkout (return to checkout after)
-- [ ] Profiles (name, phone) pre-fill checkout; real orders saved; wishlist synced
-- [ ] Contact form saves messages; realistic placeholder contact details
-- [ ] Clothing items + outfit photos; "The ALOX Edit" looks with Shop the Look / add entire look
-- [ ] Stylist uses new items
+- [x] Sign-in / sign-up (email + Google), password reset
+- [x] Checkout requires sign-in, saves real orders, pre-fills profile
+- [x] Account page: real profile, orders, wishlist
+- [x] Contact form saves messages; contact details wired site-wide (placeholders, user to edit)
+- [x] Clothing items + The ALOX Edit looks + Shop the Look + Complete the look
+- [x] Stylist recommends from full catalogue
