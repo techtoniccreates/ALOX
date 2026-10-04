@@ -14,6 +14,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { StoreProvider } from "@/lib/store";
+import { AuthProvider } from "@/lib/auth";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 
@@ -91,6 +92,7 @@ function RootComponent() {
   const path = useRouterState({ select: (s) => s.location.pathname });
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthProvider>
       <StoreProvider>
         <Header />
         <main key={path} className="animate-fade min-h-screen">
@@ -98,6 +100,7 @@ function RootComponent() {
         </main>
         <Footer />
       </StoreProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

@@ -18,7 +18,7 @@ export const Route = createFileRoute("/edit/")({
 
 const occasions = ["All", "Work", "Evening", "Weekend", "Travel", "Special occasion", "Everyday"];
 
-export function priceRange(slug: string) {
+function priceRange(slug: string) {
   const l = looks.find((x) => x.slug === slug)!;
   const ps = lookProducts(l).map((p) => p.price);
   return `${formatPrice(Math.min(...ps))} – ${formatPrice(Math.max(...ps))}`;
