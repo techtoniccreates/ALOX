@@ -1,5 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
+import { contact } from "@/lib/contact";
 import { formatPrice, getProduct } from "@/lib/products";
 import { shippingFor, useStore } from "@/lib/store";
 import { OrderSummary } from "@/components/site/OrderSummary";
@@ -22,22 +25,46 @@ const steps = ["Information", "Delivery", "Payment", "Confirmation"];
 const deliveries = [
   { id: "standard", label: "Standard", note: "3–5 working days", price: 0 },
   { id: "express", label: "Express", note: "1–2 working days", price: 20 },
-  { id: "atelier", label: "Atelier collection", note: "Collect in Marylebone", price: 0 },
+  { id: "atelier", label: "Atelier collection", note: `Collect at ${contact.address.split(",").slice(1, 2).join("").trim() || "our atelier"}`, price: 0 },
 ];
 
 type Info = { name: string; email: string; phone: string; address: string; city: string; country: string };
 
 function Checkout() {
   const { cart, subtotal, clear } = useStore();
+  const { user, ready } = useAuth();
+  const navigate = useNavigate();
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const [step, setStep] = useState(0);
-  const [info, setInfo] = useState<Info>({ name: "", email: "", phone: "", address: "", city: "", country: "United Kingdom" });
+  const [info, setInfo] = useState<Info>({ name: "", email: "", phone: "", address: "", city: "", country: "Nigeria" });
   const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
   const [delivery, setDelivery] = useState("standard");
   const [card, setCard] = useState({ number: "", expiry: "", cvc: "", holder: "" });
   const [order, setOrder] = useState<{ id: string; total: number; items: number } | null>(null);
 
+  useEffect(() => {
+    if (ready && !user) navigate({ to: "/auth", search: { redirect: "/checkout" }, replace: true });
+  }, [ready, user]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("full_name, phone").eq("id", user.id).maybeSingle().then(({ data }) => {
+      setInfo((i) => ({
+        ...i,
+        email: i.email || user.email || "",
+        name: i.name || data?.full_name || (user.user_metadata["full_name"] as string | undefined) || "",
+        phone: i.phone || data?.phone || "",
+      }));
+    });
+  }, [user]);
+
   const deliveryPrice = deliveries.find((d) => d.id === delivery)!.price;
   const shipping = shippingFor(subtotal) + deliveryPrice;
+
+  if (!ready || !user) {
+    return <section className="container-lux pb-36 pt-44"><p className="eyebrow text-muted-foreground">Taking you to sign in…</p></section>;
+  }
 
   if (cart.length === 0 && !order) {
     return (
@@ -70,11 +97,25 @@ function Checkout() {
     return !Object.keys(e).length;
   };
 
-  const next = () => {
+  const next = async () => {
     if (step === 0 && !validateInfo()) return;
     if (step === 2) {
       if (!validateCard()) return;
-      setOrder({ id: `ALX-${Math.floor(100000 + Math.random() * 900000)}`, total: subtotal + shipping, items: cart.reduce((a, l) => a + l.qty, 0) });
+      setSaving(true); setSaveError("");
+      const id = `ALX-${Math.floor(100000 + Math.random() * 900000)}`;
+      const items = cart.map((l) => {
+        const p = getProduct(l.slug);
+        return { slug: l.slug, name: p?.name ?? l.slug, option: l.option, qty: l.qty, price: p?.price ?? 0 };
+      });
+      const { error } = await supabase.from("orders").insert({
+        order_number: id, items, subtotal, shipping, total: subtotal + shipping,
+        delivery: deliveries.find((d) => d.id === delivery)!.label,
+        address: { name: info.name, email: info.email, phone: info.phone, address: info.address, city: info.city, country: info.country },
+      });
+      if (!error) await supabase.from("profiles").upsert({ id: user.id, full_name: info.name, phone: info.phone, updated_at: new Date().toISOString() });
+      setSaving(false);
+      if (error) { setSaveError("We couldn't place your order. Please try again."); return; }
+      setOrder({ id, total: subtotal + shipping, items: cart.reduce((a, l) => a + l.qty, 0) });
       clear();
     }
     setStep((s) => s + 1);
@@ -108,9 +149,9 @@ function Checkout() {
           <h2 className="display mt-6 text-5xl md:text-6xl">Thank you, {info.name.split(" ")[0]}.</h2>
           <p className="mt-6 text-muted-foreground">
             Your order of {order.items} {order.items === 1 ? "piece" : "pieces"} totalling {formatPrice(order.total)} is confirmed.
-            A confirmation would be sent to {info.email}.
+            You can follow it any time from your account.
           </p>
-          <p className="mt-4 text-xs text-muted-foreground">Portfolio demo — no payment was taken and no order was placed.</p>
+          <p className="mt-4 text-xs text-muted-foreground">Demo payment — no card was charged.</p>
           <div className="mt-12 flex flex-col justify-center gap-3 sm:flex-row">
             <Link to="/shop" className="btn-solid">Continue Shopping</Link>
             <Link to="/account" className="btn-outline">View Account</Link>
@@ -170,7 +211,7 @@ function Checkout() {
             )}
             <div className="mt-12 flex items-center justify-between gap-4">
               {step > 0 ? <button onClick={() => setStep((s) => s - 1)} className="eyebrow link-line">Back</button> : <Link to="/cart" className="eyebrow link-line">Return to bag</Link>}
-              <button onClick={next} className="btn-solid">{step === 2 ? `Place Order · ${formatPrice(subtotal + shipping)}` : "Continue"}</button>
+              <button onClick={next} disabled={saving} className="btn-solid">{saving ? "Placing order…" : step === 2 ? `Place Order · ${formatPrice(subtotal + shipping)}` : "Continue"}</button>{saveError && <p className="text-sm text-destructive">{saveError}</p>}
             </div>
           </div>
           <div className="lg:col-span-5">

@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Heart, Minus, Plus } from "lucide-react";
-import { formatPrice, getProduct, products } from "@/lib/products";
+import { formatPrice, getProduct, lookFor, lookProducts, products } from "@/lib/products";
 import { useStore } from "@/lib/store";
 import { ProductCard } from "@/components/site/ProductCard";
 import { cn } from "@/lib/utils";
@@ -126,6 +126,25 @@ function ProductPage() {
           </div>
         </div>
       </section>
+
+      {(() => {
+        const look = lookFor(p.slug);
+        if (!look) return null;
+        const rest = lookProducts(look).filter((x) => x.slug !== p.slug);
+        return (
+          <section className="container-lux grid gap-10 border-t pt-24 md:grid-cols-12 md:pt-36">
+            <div className="md:col-span-5">
+              <p className="eyebrow text-gold">Complete the look</p>
+              <h2 className="display mt-4 text-4xl md:text-5xl">{look.name}</h2>
+              <p className="mt-4 max-w-sm text-muted-foreground">{look.description}</p>
+              <Link to="/edit/$slug" params={{ slug: look.slug }} className="btn-solid mt-8">Shop the Look</Link>
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:col-span-7 md:grid-cols-3">
+              {rest.slice(0, 3).map((r) => <ProductCard key={r.slug} product={r} />)}
+            </div>
+          </section>
+        );
+      })()}
 
       <section className="container-lux py-24 md:py-36">
         <h2 className="display mb-12 text-4xl md:text-5xl">You may also like</h2>

@@ -3,18 +3,20 @@ import { useEffect, useState } from "react";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { Wordmark } from "./Logo";
 import { useStore } from "@/lib/store";
+import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
 const nav = [
   { to: "/shop", label: "Collection" },
+  { to: "/edit", label: "The Edit" },
   { to: "/stylist", label: "Stylist" },
-  { to: "/about", label: "About" },
   { to: "/story", label: "Our Story" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
 export function Header() {
   const { count, wishlist } = useStore();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const [q, setQ] = useState("");
@@ -61,9 +63,13 @@ export function Header() {
           <button aria-label="Search" onClick={() => setSearching((s) => !s)}>
             <Search className="h-[18px] w-[18px]" strokeWidth={1.25} />
           </button>
-          <Link to="/account" aria-label="Account" className="hidden sm:block">
-            <User className="h-[18px] w-[18px]" strokeWidth={1.25} />
-          </Link>
+          {user ? (
+            <Link to="/account" aria-label="Your account" className="hidden sm:block">
+              <User className="h-[18px] w-[18px]" strokeWidth={1.25} />
+            </Link>
+          ) : (
+            <Link to="/auth" className="eyebrow link-line hidden sm:block">Sign in</Link>
+          )}
           <Link to="/account" search={{ tab: "wishlist" }} aria-label="Wishlist" className="relative hidden sm:block">
             <Heart className="h-[18px] w-[18px]" strokeWidth={1.25} />
             {wishlist.length > 0 && <span className="absolute -right-1.5 -top-1 h-1.5 w-1.5 bg-gold" />}
@@ -94,7 +100,7 @@ export function Header() {
       {open && (
         <div className="animate-fade h-[calc(100dvh-4rem)] border-t bg-background text-foreground lg:hidden">
           <nav className="container-lux flex flex-col gap-6 pt-10">
-            {[...nav, { to: "/account", label: "Account" }, { to: "/cart", label: "Bag" }].map((n) => (
+            {[{ to: "/about", label: "About" }, ...nav, { to: user ? "/account" : "/auth", label: user ? "Account" : "Sign in" }, { to: "/cart", label: "Bag" }].map((n) => (
               <Link key={n.to} to={n.to} className="font-serif text-4xl">{n.label}</Link>
             ))}
           </nav>
