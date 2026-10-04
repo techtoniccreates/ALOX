@@ -211,7 +211,7 @@ function Checkout() {
             )}
             <div className="mt-12 flex items-center justify-between gap-4">
               {step > 0 ? <button onClick={() => setStep((s) => s - 1)} className="eyebrow link-line">Back</button> : <Link to="/cart" className="eyebrow link-line">Return to bag</Link>}
-              <button onClick={next} className="btn-solid">{step === 2 ? `Place Order · ${formatPrice(subtotal + shipping)}` : "Continue"}</button>
+              <button onClick={next} disabled={saving} className="btn-solid">{saving ? "Placing order…" : step === 2 ? `Place Order · ${formatPrice(subtotal + shipping)}` : "Continue"}</button>{saveError && <p className="text-sm text-destructive">{saveError}</p>}
             </div>
           </div>
           <div className="lg:col-span-5">
