@@ -27,7 +27,7 @@ type Result = Awaited<ReturnType<typeof getRecommendations>>;
 function Chip({ active, children, onClick }: { active: boolean; children: React.ReactNode; onClick: () => void }) {
   return (
     <button type="button" onClick={onClick} aria-pressed={active}
-      className={cn("border px-4 py-2.5 text-sm transition-colors", active ? "border-ink bg-ink text-primary-foreground" : "hover:border-ink")}>
+      className={cn("border px-4 py-2.5 text-sm transition-[color,background-color,border-color,transform] duration-300 active:scale-95", active ? "animate-pop border-ink bg-ink text-primary-foreground" : "hover:-translate-y-0.5 hover:border-ink")}>
       {children}
     </button>
   );
@@ -123,8 +123,8 @@ function Stylist() {
               </div>
             </div>
             <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-14 md:gap-x-8 lg:grid-cols-4">
-              {picks.map((p) => (
-                <div key={p.slug}>
+              {picks.map((p, i) => (
+                <div key={p.slug} className="animate-rise" style={{ animationDelay: `${200 + i * 180}ms` }}>
                   <ProductCard product={p.product} />
                   <p className="mt-3 border-t pt-3 text-sm italic text-muted-foreground">{p.reason}</p>
                 </div>

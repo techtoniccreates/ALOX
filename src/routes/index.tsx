@@ -3,7 +3,7 @@ import { useState } from "react";
 import hero from "@/assets/hero.jpg";
 import { editorial, products } from "@/lib/products";
 import { ProductCard } from "@/components/site/ProductCard";
-import { Reveal } from "@/components/site/Reveal";
+import { Reveal, Parallax, Marquee } from "@/components/site/Reveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -32,35 +32,38 @@ function Home() {
       {/* Hero */}
       <section className="relative h-[100svh] min-h-[640px] overflow-hidden bg-ink text-primary-foreground">
         <img src={hero} alt="ALOX campaign — model in a long black coat in a travertine hall" width={1920} height={1088}
-          className="animate-zoomout absolute inset-0 h-full w-full object-cover object-[75%_center] opacity-85" />
+          className="animate-hero absolute inset-0 h-full w-full object-cover object-[75%_center] opacity-85 will-change-transform" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/20 to-transparent" />
         <div className="container-lux relative flex h-full flex-col justify-end pb-16 md:justify-center md:pb-0">
-          <p className="eyebrow animate-fade text-gold [animation-delay:400ms]">Autumn / Winter 2026</p>
-          <h1 className="display animate-rise mt-6 max-w-3xl text-[3.25rem] sm:text-7xl lg:text-[7.5rem] [animation-delay:300ms]">
-            The Art of<br /><em className="font-light">Modern</em> Luxury
+          <p className="eyebrow animate-fade text-gold [animation-delay:200ms]">Autumn / Winter 2026</p>
+          <h1 className="display mt-6 max-w-3xl text-[3.25rem] sm:text-7xl lg:text-[7.5rem]">
+            <span className="block overflow-hidden pb-[0.08em]"><span className="animate-rise block [animation-delay:200ms]">The Art of</span></span>
+            <span className="block overflow-hidden pb-[0.08em]"><span className="animate-rise block [animation-delay:320ms]"><em className="font-light">Modern</em> Luxury</span></span>
           </h1>
-          <p className="animate-rise mt-8 max-w-md text-base leading-relaxed opacity-80 [animation-delay:550ms]">
+          <p className="animate-fade mt-8 max-w-md text-base leading-relaxed opacity-80 [animation-delay:450ms] [animation-duration:1.2s]">
             Refined essentials designed for those who appreciate quality, simplicity and timeless expression.
           </p>
-          <div className="animate-rise mt-10 flex flex-col gap-3 sm:flex-row [animation-delay:700ms]">
-            <Link to="/shop" className="btn-light">Explore Collection</Link>
-            <Link to="/about" className="btn-ghost-light">Discover ALOX</Link>
+          <div className="animate-rise mt-10 flex flex-col gap-3 sm:flex-row [animation-delay:650ms]">
+            <Link to="/shop" className="btn-light lift">Explore Collection <span className="nudge">→</span></Link>
+            <Link to="/about" className="btn-ghost-light lift">Discover ALOX</Link>
           </div>
         </div>
       </section>
 
+      <Marquee text="ALOX — Modern Luxury" className="eyebrow border-b bg-background py-5 text-muted-foreground" />
+
       {/* Featured */}
       <section className="container-lux py-24 md:py-36">
         <div className="mb-14 flex items-end justify-between gap-6">
-          <div>
+          <Reveal>
             <p className="eyebrow text-gold">Featured Collection</p>
             <h2 className="display mt-4 text-4xl md:text-6xl">Considered pieces</h2>
-          </div>
+          </Reveal>
           <Link to="/shop" className="eyebrow link-line hidden sm:inline">View all</Link>
         </div>
         <div className="grid grid-cols-2 gap-x-4 gap-y-12 md:gap-x-8 lg:grid-cols-4">
           {featured.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 100}><ProductCard product={p} /></Reveal>
+            <Reveal key={p.slug} delay={i * 110}><ProductCard product={p} /></Reveal>
           ))}
         </div>
       </section>
@@ -68,37 +71,45 @@ function Home() {
       {/* Philosophy */}
       <section className="bg-ivory">
         <div className="container-lux grid gap-10 py-28 md:grid-cols-12 md:py-44">
-          <p className="eyebrow text-gold md:col-span-3">The ALOX Philosophy</p>
-          <Reveal className="md:col-span-8">
-            <h2 className="display text-5xl md:text-8xl">Less, but better.</h2>
-            <p className="mt-10 max-w-2xl font-serif text-2xl leading-snug text-ink-soft md:text-3xl">
-              ALOX is built around the belief that true luxury does not need to shout. Every detail is considered —
-              from materials and form to the experience surrounding them.
-            </p>
-          </Reveal>
+          <Reveal variant="fade" className="md:col-span-3"><p className="eyebrow text-gold">The ALOX Philosophy</p></Reveal>
+          <div className="md:col-span-8">
+            <Reveal variant="fade"><h2 className="display text-5xl md:text-8xl">Less, but better.</h2></Reveal>
+            <Reveal delay={250}>
+              <p className="mt-10 max-w-2xl font-serif text-2xl leading-snug text-ink-soft md:text-3xl">
+                ALOX is built around the belief that true luxury does not need to shout. Every detail is considered —
+                from materials and form to the experience surrounding them.
+              </p>
+            </Reveal>
+          </div>
         </div>
       </section>
 
       {/* Crafted with intention */}
       <section className="grid md:grid-cols-2">
         <div className="relative min-h-[60vh] overflow-hidden">
-          <img src={editorial.craft} alt="Artisan hand-stitching black leather" loading="lazy" width={1152} height={1440}
-            className="absolute inset-0 h-full w-full object-cover" />
+          <Parallax className="absolute inset-0">
+            <img src={editorial.craft} alt="Artisan hand-stitching black leather" loading="lazy" width={1152} height={1440}
+              className="h-full w-full object-cover" />
+          </Parallax>
         </div>
         <div className="flex flex-col justify-center bg-ink px-6 py-20 text-primary-foreground md:px-16 lg:px-24">
-          <p className="eyebrow text-gold">Crafted with Intention</p>
-          <h2 className="display mt-5 text-4xl md:text-6xl">Made slowly,<br />made to last.</h2>
-          <ol className="mt-14 divide-y divide-primary-foreground/15 border-y border-primary-foreground/15">
+          <Reveal><p className="eyebrow text-gold">Crafted with Intention</p>
+          <h2 className="display mt-5 text-4xl md:text-6xl">Made slowly,<br />made to last.</h2></Reveal>
+          <ol className="mt-14">
+            <Reveal variant="line" className="h-px bg-primary-foreground/15" />
             {principles.map(([n, t, d], i) => (
-              <Reveal key={n} delay={i * 120}>
-                <li className="grid grid-cols-[3rem_1fr] gap-4 py-7">
-                  <span className="font-serif text-lg text-gold">{n}</span>
-                  <div>
-                    <h3 className="eyebrow">{t}</h3>
-                    <p className="mt-2 text-sm opacity-70">{d}</p>
+              <li key={n}>
+                <Reveal delay={150 + i * 160}>
+                  <div className="grid grid-cols-[3rem_1fr] gap-4 py-7">
+                    <span className="font-serif text-lg text-gold">{n}</span>
+                    <div>
+                      <h3 className="eyebrow">{t}</h3>
+                      <p className="mt-2 text-sm opacity-70">{d}</p>
+                    </div>
                   </div>
-                </li>
-              </Reveal>
+                </Reveal>
+                <Reveal variant="line" delay={250 + i * 160} className="h-px bg-primary-foreground/15" />
+              </li>
             ))}
           </ol>
         </div>
@@ -106,20 +117,26 @@ function Home() {
 
       {/* Editorial */}
       <section className="container-lux py-24 md:py-36">
-        <p className="eyebrow text-gold">Campaign</p>
-        <h2 className="display mt-4 text-4xl md:text-6xl">Quiet architecture</h2>
+        <Reveal>
+          <p className="eyebrow text-gold">Campaign</p>
+          <h2 className="display mt-4 text-4xl md:text-6xl">Quiet architecture</h2>
+        </Reveal>
         <div className="mt-14 grid gap-4 md:grid-cols-12 md:gap-6">
-          <Reveal className="md:col-span-8">
+          <Reveal variant="mask" className="overflow-hidden md:col-span-8">
             <img src={editorial.ed2} alt="Model in an ivory suit seated on a black stone bench" loading="lazy" width={1600} height={1072}
               className="aspect-[3/2] w-full object-cover" />
           </Reveal>
-          <Reveal className="md:col-span-4 md:mt-32" delay={150}>
-            <img src={editorial.ed1} alt="Hands holding a black leather bag" loading="lazy" width={896} height={1152}
-              className="aspect-[4/5] w-full object-cover" />
-            <p className="mt-6 max-w-xs text-sm text-muted-foreground">
-              Shot in a travertine gallery — the collection framed by stone, shadow and stillness.
-            </p>
-          </Reveal>
+          <div className="md:col-span-4 md:mt-32">
+            <Reveal variant="mask" delay={200} className="overflow-hidden">
+              <img src={editorial.ed1} alt="Hands holding a black leather bag" loading="lazy" width={896} height={1152}
+                className="aspect-[4/5] w-full object-cover" />
+            </Reveal>
+            <Reveal delay={500}>
+              <p className="mt-6 max-w-xs text-sm text-muted-foreground">
+                Shot in a travertine gallery — the collection framed by stone, shadow and stillness.
+              </p>
+            </Reveal>
+          </div>
         </div>
       </section>
 
