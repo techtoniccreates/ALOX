@@ -3,7 +3,7 @@ import { useState } from "react";
 import hero from "@/assets/hero.jpg";
 import { editorial, products } from "@/lib/products";
 import { ProductCard } from "@/components/site/ProductCard";
-import { Reveal } from "@/components/site/Reveal";
+import { Reveal, Parallax, Marquee } from "@/components/site/Reveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
