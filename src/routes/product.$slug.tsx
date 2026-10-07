@@ -4,6 +4,7 @@ import { Heart, Minus, Plus } from "lucide-react";
 import { formatPrice, getProduct, lookFor, lookProducts, products } from "@/lib/products";
 import { useStore } from "@/lib/store";
 import { ProductCard } from "@/components/site/ProductCard";
+import { Reveal } from "@/components/site/Reveal";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/product/$slug")({
