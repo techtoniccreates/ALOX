@@ -102,7 +102,8 @@
   background: var(--ink); color: var(--warm-white);
   font-size: 0.6875rem; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 400;
   border: 1px solid var(--ink);
-  transition: background .4s ease, color .4s ease;
+  transition: background .4s ease, color .4s ease, transform .5s cubic-bezier(.2,.7,.2,1);
+  &:active { transform: scale(.97); transition-duration: .12s; }
   &:hover { background: transparent; color: var(--ink); }
   &:disabled { opacity: .4; pointer-events: none; }
 }
@@ -113,7 +114,8 @@
   background: transparent; color: var(--ink);
   font-size: 0.6875rem; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 400;
   border: 1px solid var(--ink);
-  transition: background .4s ease, color .4s ease;
+  transition: background .4s ease, color .4s ease, transform .5s cubic-bezier(.2,.7,.2,1);
+  &:active { transform: scale(.97); transition-duration: .12s; }
   &:hover { background: var(--ink); color: var(--warm-white); }
 }
 
@@ -123,7 +125,8 @@
   background: var(--warm-white); color: var(--ink);
   font-size: 0.6875rem; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 400;
   border: 1px solid var(--warm-white);
-  transition: background .4s ease, color .4s ease;
+  transition: background .4s ease, color .4s ease, transform .5s cubic-bezier(.2,.7,.2,1);
+  &:active { transform: scale(.97); transition-duration: .12s; }
   &:hover { background: transparent; color: var(--warm-white); }
 }
 
@@ -133,7 +136,8 @@
   color: var(--warm-white);
   font-size: 0.6875rem; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 400;
   border: 1px solid color-mix(in oklab, var(--warm-white) 60%, transparent);
-  transition: background .4s ease, color .4s ease;
+  transition: background .4s ease, color .4s ease, transform .5s cubic-bezier(.2,.7,.2,1);
+  &:active { transform: scale(.97); transition-duration: .12s; }
   &:hover { background: var(--warm-white); color: var(--ink); }
 }
 

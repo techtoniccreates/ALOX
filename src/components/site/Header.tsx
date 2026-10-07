@@ -41,7 +41,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-500",
+        "animate-fade fixed inset-x-0 top-0 z-50 transition-colors duration-500",
         overHero ? "text-primary-foreground" : "border-b bg-background text-foreground",
       )}
     >
@@ -72,17 +72,17 @@ export function Header() {
           )}
           <Link to="/account" search={{ tab: "wishlist" }} aria-label="Wishlist" className="relative hidden sm:block">
             <Heart className="h-[18px] w-[18px]" strokeWidth={1.25} />
-            {wishlist.length > 0 && <span className="absolute -right-1.5 -top-1 h-1.5 w-1.5 bg-gold" />}
+            {wishlist.length > 0 && <span key={wishlist.length} className="animate-count absolute -right-1.5 -top-1 h-1.5 w-1.5 bg-gold" />}
           </Link>
           <Link to="/cart" aria-label={`Bag, ${count} items`} className="flex items-center gap-2">
             <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.25} />
-            <span className="eyebrow tabular-nums">{count}</span>
+            <span key={count} className="eyebrow animate-count tabular-nums">{count}</span>
           </Link>
         </div>
       </div>
 
       {searching && (
-        <form onSubmit={submit} className="animate-fade border-t bg-background text-foreground">
+        <form onSubmit={submit} className="animate-slide-down border-t bg-background text-foreground">
           <div className="container-lux flex items-center gap-4 py-5">
             <Search className="h-4 w-4 text-muted-foreground" strokeWidth={1.25} />
             <input
@@ -98,10 +98,10 @@ export function Header() {
       )}
 
       {open && (
-        <div className="animate-fade h-[calc(100dvh-4rem)] border-t bg-background text-foreground lg:hidden">
+        <div className="animate-slide-down h-[calc(100dvh-4rem)] border-t bg-background text-foreground lg:hidden">
           <nav className="container-lux flex flex-col gap-6 pt-10">
-            {[{ to: "/about", label: "About" }, ...nav, { to: user ? "/account" : "/auth", label: user ? "Account" : "Sign in" }, { to: "/cart", label: "Bag" }].map((n) => (
-              <Link key={n.to} to={n.to} className="font-serif text-4xl">{n.label}</Link>
+            {[{ to: "/about", label: "About" }, ...nav, { to: user ? "/account" : "/auth", label: user ? "Account" : "Sign in" }, { to: "/cart", label: "Bag" }].map((n, i) => (
+              <Link key={n.to} to={n.to} className="animate-rise font-serif text-4xl" style={{ animationDelay: `${120 + i * 60}ms`, animationDuration: "0.7s" }}>{n.label}</Link>
             ))}
           </nav>
         </div>

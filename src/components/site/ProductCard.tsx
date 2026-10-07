@@ -8,7 +8,7 @@ export function ProductCard({ product, priority }: { product: Product; priority?
   const { wishlist, toggleWish } = useStore();
   const wished = wishlist.includes(product.slug);
   return (
-    <article className="group">
+    <article className="group transition-transform duration-500 ease-out hover:-translate-y-1">
       <div className="relative overflow-hidden bg-ivory">
         <Link to="/product/$slug" params={{ slug: product.slug }} aria-label={product.name}>
           <img
@@ -17,13 +17,13 @@ export function ProductCard({ product, priority }: { product: Product; priority?
             loading={priority ? "eager" : "lazy"}
             width={896}
             height={1152}
-            className="aspect-[4/5] w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
+            className="aspect-[4/5] w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.04]"
           />
           <img
             src={product.images[1]}
             alt=""
             loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-[opacity,transform] duration-700 scale-[1.02] group-hover:scale-100 group-hover:opacity-100"
           />
           <span className="eyebrow absolute inset-x-0 bottom-0 translate-y-full bg-background/95 py-4 text-center transition-transform duration-500 group-hover:translate-y-0">
             View Product
@@ -36,7 +36,7 @@ export function ProductCard({ product, priority }: { product: Product; priority?
           aria-pressed={wished}
           className="absolute right-4 top-4 p-1"
         >
-          <Heart className={cn("h-4 w-4 transition-colors", wished ? "fill-gold text-gold" : "text-ink")} strokeWidth={1.25} />
+          <Heart key={String(wished)} className={cn("h-4 w-4 transition-colors", wished && "animate-pop", wished ? "fill-gold text-gold" : "text-ink")} strokeWidth={1.25} />
         </button>
       </div>
       <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
