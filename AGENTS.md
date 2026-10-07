@@ -14,3 +14,5 @@
 - Product catalogue is static data in src/lib/products.ts — single source for shop, product pages and cart.
 - Brand styles (buttons, fields, eyebrow labels) are Tailwind @utility classes in src/styles.css — keeps components token-only.
 - AI stylist: createServerFn in src/lib/stylist.functions.ts lazily imports stylist.server.ts (gateway call + catalogue prompt) — keeps key and prompt server-side; returned slugs are validated against the catalogue.
+
+- Motion system: keyframes/utilities in src/styles.css plus Reveal/Parallax/Marquee in src/components/site/Reveal.tsx — one shared, reduced-motion-aware vocabulary instead of an animation library.
