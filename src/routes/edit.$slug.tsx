@@ -52,8 +52,8 @@ function LookPage() {
 
           <h2 className="eyebrow mt-14 border-b pb-4">The look includes</h2>
           <ul className="divide-y">
-            {items.map((p) => (
-              <li key={p.slug} className="grid grid-cols-[88px_1fr] gap-5 py-6">
+            {items.map((p, i) => (
+              <li key={p.slug} style={{ animationDelay: `${150 + i * 140}ms` }} className="animate-slide-x grid grid-cols-[88px_1fr] gap-5 py-6">
                 <Link to="/product/$slug" params={{ slug: p.slug }} className="bg-ivory"><img src={p.images[0]} alt={p.name} className="aspect-[4/5] w-full object-cover" /></Link>
                 <div className="min-w-0">
                   <div className="flex items-start justify-between gap-4">
@@ -75,7 +75,7 @@ function LookPage() {
           </ul>
           <div className="mt-6 flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
             <p className="eyebrow">Complete look · <span className="tabular-nums">{formatPrice(total)}</span></p>
-            <button onClick={addAll} className="btn-solid">Add Entire Look to Bag</button>
+            <button onClick={addAll} className="btn-solid lift">Add Entire Look to Bag</button>
           </div>
           {Object.keys(added).length > 0 && <Link to="/cart" className="eyebrow link-line mt-6 inline-block text-gold">View bag</Link>}
         </div>

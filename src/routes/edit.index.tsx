@@ -48,7 +48,7 @@ function EditPage() {
           <Reveal key={l.slug} delay={(i % 2) * 120} className={cn(i % 2 === 1 && "md:mt-32")}>
             <Link to="/edit/$slug" params={{ slug: l.slug }} className="group block">
               <div className="overflow-hidden bg-ivory">
-                <img src={l.image} alt={l.name} loading="lazy" width={1024} height={1408} className="aspect-[4/5] w-full object-cover transition-transform duration-[1400ms] group-hover:scale-[1.03]" />
+                <img src={l.image} alt={l.name} loading="lazy" width={1024} height={1408} className="aspect-[4/5] w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.04]" />
               </div>
             </Link>
             <p className="eyebrow mt-6 text-gold">Look {l.number}</p>

@@ -104,7 +104,7 @@ function ProductPage() {
 
           <div className="mt-10 grid gap-3">
             <div className="grid grid-cols-[1fr_auto] gap-3">
-              <button onClick={addToCart} className="btn-solid">{added ? "Added to Bag ✓" : "Add to Bag"}</button>
+              <button key={String(added)} onClick={addToCart} className={cn("btn-solid", added && "animate-pop")}>{added ? "Added ✓" : "Add to Bag"}</button>
               <button onClick={() => toggleWish(p.slug)} aria-label="Wishlist" aria-pressed={wished} className="border px-5 hover:border-ink">
                 <Heart className={cn("h-4 w-4", wished && "fill-gold text-gold")} strokeWidth={1.25} />
               </button>
@@ -140,7 +140,7 @@ function ProductPage() {
               <Link to="/edit/$slug" params={{ slug: look.slug }} className="btn-solid mt-8">Shop the Look</Link>
             </div>
             <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:col-span-7 md:grid-cols-3">
-              {rest.slice(0, 3).map((r) => <ProductCard key={r.slug} product={r} />)}
+              {rest.slice(0, 3).map((r, i) => <Reveal key={r.slug} delay={i * 220}><ProductCard product={r} /></Reveal>)}
             </div>
           </section>
         );
