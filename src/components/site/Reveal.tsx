@@ -33,7 +33,7 @@ export function Reveal({
   }, []);
   return (
     <div ref={ref} data-variant={variant} className={cn("reveal", className)} style={{ transitionDelay: `${delay}ms` }}>
-      {children}
+      {variant === "mask" ? <div className="reveal-mask" style={{ transitionDelay: `${delay}ms` }}>{children}</div> : children}
     </div>
   );
 }

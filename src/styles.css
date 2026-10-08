@@ -216,10 +216,12 @@
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1.1s var(--ease-lux), transform 1.1s var(--ease-lux); }
 .reveal[data-variant="fade"] { transform: none; }
 .reveal[data-variant="pan"] { transform: translateX(-20px); }
-.reveal[data-variant="mask"] { opacity: 1; transform: none; clip-path: inset(100% 0 0 0); transition: clip-path 1.4s var(--ease-out-soft); }
+.reveal[data-variant="mask"] { opacity: 1; transform: none; }
+.reveal-mask { clip-path: inset(100% 0 0 0); transition: clip-path 1.4s var(--ease-out-soft); }
+.reveal.is-in > .reveal-mask { clip-path: inset(0 0 0 0); }
 .reveal[data-variant="mask"] img { transform: scale(1.08); transition: transform 1.8s var(--ease-out-soft); }
 .reveal[data-variant="mask"].is-in img { transform: scale(1); }
-.reveal.is-in { opacity: 1; transform: none; clip-path: inset(0 0 0 0); }
+.reveal.is-in { opacity: 1; transform: none; }
 .reveal[data-variant="line"] { opacity: 1; transform: scaleX(0); transform-origin: left; transition: transform 1.2s var(--ease-lux); }
 .reveal[data-variant="line"].is-in { transform: scaleX(1); }
 
