@@ -3,7 +3,7 @@ import { useState } from "react";
 import hero from "@/assets/hero.jpg";
 import { editorial, products } from "@/lib/products";
 import { ProductCard } from "@/components/site/ProductCard";
-import { Reveal, Parallax, Marquee } from "@/components/site/Reveal";
+import { Reveal, Parallax, Marquee, TypeOnView } from "@/components/site/Reveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -131,11 +131,8 @@ function Home() {
               <img src={editorial.ed1} alt="Hands holding a black leather bag" loading="lazy" width={896} height={1152}
                 className="aspect-[4/5] w-full object-cover" />
             </Reveal>
-            <Reveal delay={500}>
-              <p className="mt-6 max-w-xs text-sm text-muted-foreground">
-                Shot in a travertine gallery — the collection framed by stone, shadow and stillness.
-              </p>
-            </Reveal>
+            <TypeOnView delay={900} className="mt-6 max-w-xs text-sm text-muted-foreground"
+              text="Shot in a travertine gallery — the collection framed by stone, shadow and stillness." />
           </div>
         </div>
       </section>
