@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 type Variant = "rise" | "fade" | "pan" | "mask" | "line";
@@ -74,5 +74,36 @@ export function Marquee({ text, className }: { text: string; className?: string 
         ))}
       </div>
     </div>
+  );
+}
+
+/** Types text out letter by letter once it scrolls into view. Space is reserved so the layout never jumps. */
+export function TypeOnView({ text, className, speed = 28, delay = 300 }: { text: string; className?: string; speed?: number; delay?: number }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setShown(text.length); return; }
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e?.isIntersecting) return;
+      io.disconnect();
+      let i = 0;
+      const tick = () => { i += 1; setShown(i); if (i < text.length) timer = setTimeout(tick, speed); };
+      timer = setTimeout(tick, delay);
+    }, { threshold: 0.5 });
+    io.observe(el);
+    return () => { io.disconnect(); if (timer) clearTimeout(timer); };
+  }, [text, speed, delay]);
+  const done = shown >= text.length;
+  return (
+    <p ref={ref} className={cn("relative", className)} aria-label={text}>
+      <span className="invisible" aria-hidden>{text}</span>
+      <span className="absolute inset-0" aria-hidden>
+        {text.slice(0, shown)}
+        <span className={cn("ml-px inline-block h-[1em] w-px translate-y-[0.15em] bg-current", done ? "animate-[fade_.6s_ease_1.2s_reverse_both]" : "")} />
+      </span>
+    </p>
   );
 }
