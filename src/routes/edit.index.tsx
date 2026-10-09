@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/edit/")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "The ALOX Edit — Complete Looks" },
       { name: "description", content: "Curated, complete ALOX outfits for work, evening, weekend and travel. Shop the whole look or piece by piece." },
       { property: "og:title", content: "The ALOX Edit — Complete Looks" },
@@ -19,7 +21,8 @@ export const Route = createFileRoute("/edit/")({
 const occasions = ["All", "Work", "Evening", "Weekend", "Travel", "Special occasion", "Everyday"];
 
 function priceRange(slug: string) {
-  const l = looks.find((x) => x.slug === slug)!;
+  const l = looks.find((x) => x.slug === slug);
+  if (!l) return "";
   const ps = lookProducts(l).map((p) => p.price);
   return `${formatPrice(Math.min(...ps))} – ${formatPrice(Math.max(...ps))}`;
 }

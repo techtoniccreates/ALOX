@@ -49,7 +49,7 @@ export function Parallax({ children, className, speed = 0.08 }: { children: Reac
       raf = 0;
       const r = el.parentElement?.getBoundingClientRect();
       if (!r) return;
-      const offset = (r.top + r.height / 2 - window.innerHeight / 2) * -speed;
+      const offset = Math.max(-r.height * 0.04, Math.min(r.height * 0.04, (r.top + r.height / 2 - window.innerHeight / 2) * -speed));
       el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0) scale(1.1)`;
     };
     const on = () => { if (!raf) raf = requestAnimationFrame(update); };
@@ -59,6 +59,32 @@ export function Parallax({ children, className, speed = 0.08 }: { children: Reac
     return () => { window.removeEventListener("scroll", on); window.removeEventListener("resize", on); cancelAnimationFrame(raf); };
   }, [speed]);
   return <div ref={ref} data-parallax className={cn("will-change-transform", className)}>{children}</div>;
+}
+
+/** Campaign-only shutter reveal and scroll-driven composition; never used on forms. */
+export function CampaignDrop({ children, className }: { children: ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = el.getBoundingClientRect();
+      const progress = Math.max(-1, Math.min(1, (window.innerHeight / 2 - rect.top - rect.height / 2) / window.innerHeight));
+      el.style.setProperty("--campaign-shift", `${progress * 32}px`);
+      el.style.setProperty("--campaign-counter", `${progress * -20}px`);
+    };
+    const schedule = () => { if (!raf) raf = requestAnimationFrame(update); };
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry?.isIntersecting) { el.classList.add("is-in"); observer.disconnect(); }
+    }, { threshold: 0.08 });
+    observer.observe(el); update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => { observer.disconnect(); cancelAnimationFrame(raf); window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); };
+  }, []);
+  return <div ref={ref} className={cn("campaign-drop", className)}>{children}</div>;
 }
 
 /** Slow editorial marquee. */

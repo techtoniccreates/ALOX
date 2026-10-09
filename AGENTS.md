@@ -16,3 +16,6 @@
 - AI stylist: createServerFn in src/lib/stylist.functions.ts lazily imports stylist.server.ts (gateway call + catalogue prompt) — keeps key and prompt server-side; returned slugs are validated against the catalogue.
 
 - Motion system: keyframes/utilities in src/styles.css plus Reveal/Parallax/Marquee in src/components/site/Reveal.tsx — one shared, reduced-motion-aware vocabulary instead of an animation library.
+- CampaignDrop is used only in campaign photography; gallery parallax is bounded to image overscan so scroll motion cannot expose empty edges.
+- Sizing references live in src/lib/sizing.ts; size-bearing individual and complete-look purchases require an explicit selection so the cart preserves shopper intent.
+- Outfit reviews use validated browser-local storage in src/lib/reviews.ts and disclose their demo scope; no fabricated ratings or public customer-review claims.

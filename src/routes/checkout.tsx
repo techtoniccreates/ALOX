@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Checkout — ALOX" },
       { name: "description", content: "Secure, simple checkout for your ALOX order (portfolio demo)." },
       { property: "og:title", content: "Checkout — ALOX" },

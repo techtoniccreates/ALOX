@@ -4,7 +4,10 @@ import { Heart, Minus, Plus } from "lucide-react";
 import { formatPrice, getProduct, lookFor, lookProducts, products } from "@/lib/products";
 import { useStore } from "@/lib/store";
 import { ProductCard } from "@/components/site/ProductCard";
-import { Reveal } from "@/components/site/Reveal";
+import { Reveal, Parallax } from "@/components/site/Reveal";
+import { SizeGuide } from "@/components/site/SizeGuide";
+import { needsSize } from "@/lib/sizing";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/product/$slug")({
@@ -18,6 +21,8 @@ export const Route = createFileRoute("/product/$slug")({
     const p = loaderData.product;
     return {
       meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
         { title: `${p.name} — ALOX` },
         { name: "description", content: p.description },
         { property: "og:title", content: `${p.name} — ALOX` },
@@ -25,7 +30,7 @@ export const Route = createFileRoute("/product/$slug")({
       ],
     };
   },
-  component: ProductPage,
+  component: () => { const { product } = Route.useLoaderData(); return <ProductPage key={product.slug} />; },
 });
 
 function ProductPage() {
@@ -33,7 +38,7 @@ function ProductPage() {
   const { add, wishlist, toggleWish } = useStore();
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
-  const [option, setOption] = useState<string>(p.options.values[0] ?? "");
+  const [option, setOption] = useState<string>(needsSize(p) ? "" : p.options.values[0] ?? "");
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [openTab, setOpenTab] = useState<string | null>("Product Details");
@@ -41,6 +46,7 @@ function ProductPage() {
   const related = products.filter((x) => x.slug !== p.slug && x.category === p.category).concat(products.filter((x) => x.category !== p.category)).slice(0, 4);
 
   const addToCart = () => {
+    if (!option) return;
     add(p.slug, option, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 2200);
@@ -60,14 +66,14 @@ function ProductPage() {
           <div className="grid gap-4 md:grid-cols-[80px_1fr]">
             <div className="order-2 flex gap-3 md:order-1 md:flex-col">
               {p.images.map((img, i) => (
-                <button key={i} onClick={() => setActive(i)} aria-label={`View image ${i + 1}`}
-                  className={cn("w-20 border transition-opacity", active === i ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}>
+                <Button variant="editorial" size="natural" key={i} onClick={() => setActive(i)} aria-label={`View image ${i + 1}`}
+                  className={cn("block w-20 border p-0 transition-opacity", active === i ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}>
                   <img src={img} alt="" className="aspect-[4/5] w-full object-cover" />
-                </button>
+                </Button>
               ))}
             </div>
-            <div className="order-1 overflow-hidden bg-ivory md:order-2">
-              <img key={active} src={p.images[active]} alt={p.name} width={896} height={1152} className="animate-fade aspect-[4/5] w-full object-cover" />
+            <div className="relative order-1 aspect-[4/5] overflow-hidden bg-ivory md:order-2">
+              <Parallax speed={0.035} className="absolute inset-0"><img key={active} src={p.images[active]} alt={p.name} width={896} height={1152} className="animate-fade h-full w-full object-cover" /></Parallax>
             </div>
           </div>
         </div>
@@ -83,13 +89,13 @@ function ProductPage() {
           <p className="mt-8 leading-relaxed text-ink-soft">{p.description}</p>
 
           <div className="mt-10">
-            <p className="eyebrow">{p.options.label} — <span className="text-muted-foreground">{option}</span></p>
+            <div className="flex flex-wrap items-center justify-between gap-3"><p className="eyebrow">{p.options.label} — <span className="text-muted-foreground">{option || "Select size"}</span></p><SizeGuide product={p} /></div>
             <div className="mt-4 flex flex-wrap gap-2">
               {p.options.values.map((v) => (
-                <button key={v} onClick={() => setOption(v)} aria-pressed={option === v}
+                <Button variant="editorial" size="natural" key={v} onClick={() => { setOption(v); setAdded(false); }} aria-pressed={option === v}
                   className={cn("min-w-14 border px-4 py-2.5 text-sm transition-colors", option === v ? "border-ink bg-ink text-primary-foreground" : "hover:border-ink")}>
                   {v}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -105,12 +111,12 @@ function ProductPage() {
 
           <div className="mt-10 grid gap-3">
             <div className="grid grid-cols-[1fr_auto] gap-3">
-              <button key={String(added)} onClick={addToCart} className={cn("btn-solid", added && "animate-pop")}>{added ? "Added ✓" : "Add to Bag"}</button>
+              <Button variant="luxury" size="natural" key={String(added)} disabled={!option} onClick={addToCart} className={cn(added && "animate-pop")}>{added ? "Added ✓" : !option ? "Select a size" : "Add to Bag"}</Button>
               <button onClick={() => toggleWish(p.slug)} aria-label="Wishlist" aria-pressed={wished} className="border px-5 hover:border-ink">
                 <Heart className={cn("h-4 w-4", wished && "fill-gold text-gold")} strokeWidth={1.25} />
               </button>
             </div>
-            <button onClick={() => { add(p.slug, option, qty); navigate({ to: "/checkout" }); }} className="btn-outline">Buy Now</button>
+            <Button variant="editorial" size="natural" disabled={!option} onClick={() => { if (!option) return; add(p.slug, option, qty); navigate({ to: "/checkout" }); }} className="btn-outline disabled:pointer-events-none disabled:opacity-40">Buy Now</Button>
             {added && <Link to="/cart" className="eyebrow link-line mt-2 justify-self-start text-gold">View bag</Link>}
           </div>
 

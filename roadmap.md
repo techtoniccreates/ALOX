@@ -1,9 +1,9 @@
 # Roadmap
-- [ ] Level 3 campaign-drop motion with reduced-motion fallback
-- [ ] Level 2 product-gallery parallax; checkout and forms stay calm
-- [ ] Product and outfit size selection with sizing guides
-- [ ] Outfit reviews with honest local-demo persistence
-- [ ] Verify interactions, layout and page metadata
+- [x] Level 3 campaign-drop motion with reduced-motion fallback
+- [x] Level 2 product-gallery parallax; checkout and forms stay calm
+- [x] Product and outfit size selection with sizing guides
+- [x] Outfit reviews with honest local-demo persistence
+- [x] Verify interactions, layout and page metadata
 - [x] Sign-in / sign-up (email + Google), password reset
 - [x] Checkout requires sign-in, saves real orders, pre-fills profile
 - [x] Account page: real profile, orders, wishlist

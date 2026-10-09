@@ -6,6 +6,8 @@ import { Reveal } from "@/components/site/Reveal";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "About ALOX — Defined by Less" },
       { name: "description", content: "The philosophy, materials, craft and approach behind ALOX." },
       { property: "og:title", content: "About ALOX — Defined by Less" },

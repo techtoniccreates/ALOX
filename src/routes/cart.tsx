@@ -7,6 +7,8 @@ import { OrderSummary } from "@/components/site/OrderSummary";
 export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Your Bag — ALOX" },
       { name: "description", content: "Review the pieces in your ALOX bag." },
       { property: "og:title", content: "Your Bag — ALOX" },
