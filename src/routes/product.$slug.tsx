@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/site/ProductCard";
 import { Reveal, Parallax } from "@/components/site/Reveal";
 import { SizeGuide } from "@/components/site/SizeGuide";
 import { needsSize } from "@/lib/sizing";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/product/$slug")({
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/product/$slug")({
       ],
     };
   },
-  component: ProductPage,
+  component: () => { const { product } = Route.useLoaderData(); return <ProductPage key={product.slug} />; },
 });
 
 function ProductPage() {
