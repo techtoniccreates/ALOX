@@ -64,10 +64,10 @@ function ProductPage() {
           <div className="grid gap-4 md:grid-cols-[80px_1fr]">
             <div className="order-2 flex gap-3 md:order-1 md:flex-col">
               {p.images.map((img, i) => (
-                <button key={i} onClick={() => setActive(i)} aria-label={`View image ${i + 1}`}
-                  className={cn("w-20 border transition-opacity", active === i ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}>
+                <Button variant="editorial" size="natural" key={i} onClick={() => setActive(i)} aria-label={`View image ${i + 1}`}
+                  className={cn("block w-20 border p-0 transition-opacity", active === i ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}>
                   <img src={img} alt="" className="aspect-[4/5] w-full object-cover" />
-                </button>
+                </Button>
               ))}
             </div>
             <div className="relative order-1 aspect-[4/5] overflow-hidden bg-ivory md:order-2">
@@ -90,10 +90,10 @@ function ProductPage() {
             <div className="flex flex-wrap items-center justify-between gap-3"><p className="eyebrow">{p.options.label} — <span className="text-muted-foreground">{option || "Select size"}</span></p><SizeGuide product={p} /></div>
             <div className="mt-4 flex flex-wrap gap-2">
               {p.options.values.map((v) => (
-                <button key={v} onClick={() => setOption(v)} aria-pressed={option === v}
+                <Button variant="editorial" size="natural" key={v} onClick={() => { setOption(v); setAdded(false); }} aria-pressed={option === v}
                   className={cn("min-w-14 border px-4 py-2.5 text-sm transition-colors", option === v ? "border-ink bg-ink text-primary-foreground" : "hover:border-ink")}>
                   {v}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -109,12 +109,12 @@ function ProductPage() {
 
           <div className="mt-10 grid gap-3">
             <div className="grid grid-cols-[1fr_auto] gap-3">
-              <button key={String(added)} disabled={!option} onClick={addToCart} className={cn("btn-solid", added && "animate-pop")}>{added ? "Added ✓" : !option ? "Select a size" : "Add to Bag"}</button>
+              <Button variant="luxury" size="natural" key={String(added)} disabled={!option} onClick={addToCart} className={cn(added && "animate-pop")}>{added ? "Added ✓" : !option ? "Select a size" : "Add to Bag"}</Button>
               <button onClick={() => toggleWish(p.slug)} aria-label="Wishlist" aria-pressed={wished} className="border px-5 hover:border-ink">
                 <Heart className={cn("h-4 w-4", wished && "fill-gold text-gold")} strokeWidth={1.25} />
               </button>
             </div>
-            <button disabled={!option} onClick={() => { if (!option) return; add(p.slug, option, qty); navigate({ to: "/checkout" }); }} className="btn-outline disabled:pointer-events-none disabled:opacity-40">Buy Now</button>
+            <Button variant="editorial" size="natural" disabled={!option} onClick={() => { if (!option) return; add(p.slug, option, qty); navigate({ to: "/checkout" }); }} className="btn-outline disabled:pointer-events-none disabled:opacity-40">Buy Now</Button>
             {added && <Link to="/cart" className="eyebrow link-line mt-2 justify-self-start text-gold">View bag</Link>}
           </div>
 
