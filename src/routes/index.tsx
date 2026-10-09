@@ -3,7 +3,7 @@ import { useState } from "react";
 import hero from "@/assets/hero.jpg";
 import { editorial, products } from "@/lib/products";
 import { ProductCard } from "@/components/site/ProductCard";
-import { Reveal, Parallax, Marquee, TypeOnView } from "@/components/site/Reveal";
+import { Reveal, Parallax, Marquee, TypeOnView, CampaignDrop } from "@/components/site/Reveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -121,20 +121,20 @@ function Home() {
           <p className="eyebrow text-gold">Campaign</p>
           <h2 className="display mt-4 text-4xl md:text-6xl">Quiet architecture</h2>
         </Reveal>
-        <div className="mt-14 grid gap-4 md:grid-cols-12 md:gap-6">
-          <Reveal variant="mask" className="overflow-hidden md:col-span-8">
+        <CampaignDrop className="mt-14 grid gap-4 md:grid-cols-12 md:gap-6">
+          <div className="campaign-primary md:col-span-8"><div className="campaign-frame">
             <img src={editorial.ed2} alt="Model in an ivory suit seated on a black stone bench" loading="lazy" width={1600} height={1072}
-              className="aspect-[3/2] w-full object-cover" />
-          </Reveal>
-          <div className="md:col-span-4 md:mt-32">
-            <Reveal variant="mask" delay={200} className="overflow-hidden">
+              className="campaign-image aspect-[3/2] w-full object-cover" />
+          </div></div>
+          <div className="campaign-secondary md:col-span-4 md:mt-32">
+            <div className="campaign-frame">
               <img src={editorial.ed1} alt="Hands holding a black leather bag" loading="lazy" width={896} height={1152}
-                className="aspect-[4/5] w-full object-cover" />
-            </Reveal>
+                className="campaign-image aspect-[4/5] w-full object-cover" />
+            </div>
             <TypeOnView delay={900} className="mt-6 max-w-xs text-sm text-muted-foreground"
               text="Shot in a travertine gallery — the collection framed by stone, shadow and stillness." />
           </div>
-        </div>
+        </CampaignDrop>
       </section>
 
       {/* New arrivals */}

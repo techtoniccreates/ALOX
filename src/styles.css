@@ -225,6 +225,24 @@
 .reveal[data-variant="line"] { opacity: 1; transform: scaleX(0); transform-origin: left; transition: transform 1.2s var(--ease-lux); }
 .reveal[data-variant="line"].is-in { transform: scaleX(1); }
 
+/* Level 3 — campaign drops only. Photography stays visible beneath the shutters. */
+.campaign-drop { --campaign-shift: 0px; --campaign-counter: 0px; }
+.campaign-frame { position: relative; overflow: hidden; }
+.campaign-frame::before, .campaign-frame::after {
+  content: ""; position: absolute; inset-block: 0; width: 50%; z-index: 1;
+  background: var(--background); pointer-events: none;
+  transition: transform 1.8s var(--ease-out-soft);
+}
+.campaign-frame::before { left: 0; transform-origin: left; }
+.campaign-frame::after { right: 0; transform-origin: right; }
+.campaign-drop.is-in .campaign-frame::before { transform: scaleX(0); }
+.campaign-drop.is-in .campaign-frame::after { transform: scaleX(0); }
+.campaign-secondary .campaign-frame::before, .campaign-secondary .campaign-frame::after { transition-delay: .2s; }
+.campaign-primary { transform: translateY(var(--campaign-shift)); }
+.campaign-secondary { transform: translateY(var(--campaign-counter)); }
+.campaign-drop.is-in .campaign-image { animation: campaign-settle 2.2s var(--ease-out-soft) both; }
+@keyframes campaign-settle { from { transform: scale(1.12); } to { transform: scale(1); } }
+
 /* Elegant floating-label fields */
 .float-field { position: relative; }
 .float-field > label { position: absolute; left: 0; top: 1rem; pointer-events: none; transition: transform .35s var(--ease-lux), color .35s ease; transform-origin: left; color: var(--stone); font-size: .95rem; }
@@ -232,6 +250,8 @@
 .float-field > :is(input, textarea):not(:placeholder-shown) + label { transform: translateY(-1.35rem) scale(.72); letter-spacing: .2em; text-transform: uppercase; color: var(--ink); }
 
 @media (prefers-reduced-motion: reduce) {
+  .campaign-frame::before, .campaign-frame::after { display: none; }
+  .campaign-primary, .campaign-secondary, .campaign-image { transform: none !important; }
   .reveal, .reveal[data-variant] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
   .reveal img { transform: none !important; }
   [data-parallax] { transform: none !important; }

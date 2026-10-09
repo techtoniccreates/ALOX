@@ -4,7 +4,9 @@ import { Heart, Minus, Plus } from "lucide-react";
 import { formatPrice, getProduct, lookFor, lookProducts, products } from "@/lib/products";
 import { useStore } from "@/lib/store";
 import { ProductCard } from "@/components/site/ProductCard";
-import { Reveal } from "@/components/site/Reveal";
+import { Reveal, Parallax } from "@/components/site/Reveal";
+import { SizeGuide } from "@/components/site/SizeGuide";
+import { needsSize } from "@/lib/sizing";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/product/$slug")({
@@ -33,7 +35,7 @@ function ProductPage() {
   const { add, wishlist, toggleWish } = useStore();
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
-  const [option, setOption] = useState<string>(p.options.values[0] ?? "");
+  const [option, setOption] = useState<string>(needsSize(p) ? "" : p.options.values[0] ?? "");
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [openTab, setOpenTab] = useState<string | null>("Product Details");
@@ -41,6 +43,7 @@ function ProductPage() {
   const related = products.filter((x) => x.slug !== p.slug && x.category === p.category).concat(products.filter((x) => x.category !== p.category)).slice(0, 4);
 
   const addToCart = () => {
+    if (!option) return;
     add(p.slug, option, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 2200);
@@ -66,8 +69,8 @@ function ProductPage() {
                 </button>
               ))}
             </div>
-            <div className="order-1 overflow-hidden bg-ivory md:order-2">
-              <img key={active} src={p.images[active]} alt={p.name} width={896} height={1152} className="animate-fade aspect-[4/5] w-full object-cover" />
+            <div className="relative order-1 aspect-[4/5] overflow-hidden bg-ivory md:order-2">
+              <Parallax speed={0.035} className="absolute inset-0"><img key={active} src={p.images[active]} alt={p.name} width={896} height={1152} className="animate-fade h-full w-full object-cover" /></Parallax>
             </div>
           </div>
         </div>
@@ -83,7 +86,7 @@ function ProductPage() {
           <p className="mt-8 leading-relaxed text-ink-soft">{p.description}</p>
 
           <div className="mt-10">
-            <p className="eyebrow">{p.options.label} — <span className="text-muted-foreground">{option}</span></p>
+            <div className="flex flex-wrap items-center justify-between gap-3"><p className="eyebrow">{p.options.label} — <span className="text-muted-foreground">{option || "Select size"}</span></p><SizeGuide product={p} /></div>
             <div className="mt-4 flex flex-wrap gap-2">
               {p.options.values.map((v) => (
                 <button key={v} onClick={() => setOption(v)} aria-pressed={option === v}
@@ -105,12 +108,12 @@ function ProductPage() {
 
           <div className="mt-10 grid gap-3">
             <div className="grid grid-cols-[1fr_auto] gap-3">
-              <button key={String(added)} onClick={addToCart} className={cn("btn-solid", added && "animate-pop")}>{added ? "Added ✓" : "Add to Bag"}</button>
+              <button key={String(added)} disabled={!option} onClick={addToCart} className={cn("btn-solid", added && "animate-pop")}>{added ? "Added ✓" : !option ? "Select a size" : "Add to Bag"}</button>
               <button onClick={() => toggleWish(p.slug)} aria-label="Wishlist" aria-pressed={wished} className="border px-5 hover:border-ink">
                 <Heart className={cn("h-4 w-4", wished && "fill-gold text-gold")} strokeWidth={1.25} />
               </button>
             </div>
-            <button onClick={() => { add(p.slug, option, qty); navigate({ to: "/checkout" }); }} className="btn-outline">Buy Now</button>
+            <button disabled={!option} onClick={() => { if (!option) return; add(p.slug, option, qty); navigate({ to: "/checkout" }); }} className="btn-outline disabled:pointer-events-none disabled:opacity-40">Buy Now</button>
             {added && <Link to="/cart" className="eyebrow link-line mt-2 justify-self-start text-gold">View bag</Link>}
           </div>
 
