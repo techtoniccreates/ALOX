@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/stylist")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "The ALOX Stylist — Personal Recommendations" },
       { name: "description", content: "Describe your style, occasion and budget, and the AI-powered ALOX stylist will curate pieces for you." },
       { property: "og:title", content: "The ALOX Stylist" },

@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/story")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "The Story of ALOX" },
       { name: "description", content: "From a single leather bag to a modern luxury house — the beginning, vision, evolution and future of ALOX." },
       { property: "og:title", content: "The Story of ALOX" },

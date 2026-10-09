@@ -17,6 +17,8 @@ export const Route = createFileRoute("/shop")({
   }),
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "The Collection — ALOX" },
       { name: "description", content: "Explore the latest ALOX collection of leather goods, accessories and lifestyle pieces." },
       { property: "og:title", content: "The Collection — ALOX" },

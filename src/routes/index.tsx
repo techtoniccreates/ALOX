@@ -8,6 +8,8 @@ import { Reveal, Parallax, Marquee, TypeOnView, CampaignDrop } from "@/component
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "ALOX — The Art of Modern Luxury" },
       { name: "description", content: "Refined essentials designed for those who appreciate quality, simplicity and timeless expression." },
       { property: "og:title", content: "ALOX — The Art of Modern Luxury" },

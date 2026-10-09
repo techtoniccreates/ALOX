@@ -19,6 +19,8 @@ export const Route = createFileRoute("/edit/$slug")({
     const l = loaderData.look;
     return {
       meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
         { title: `${l.name} — The ALOX Edit` },
         { name: "description", content: l.description },
         { property: "og:title", content: `${l.name} — The ALOX Edit` },

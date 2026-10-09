@@ -21,6 +21,8 @@ export const Route = createFileRoute("/product/$slug")({
     const p = loaderData.product;
     return {
       meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
         { title: `${p.name} — ALOX` },
         { name: "description", content: p.description },
         { property: "og:title", content: `${p.name} — ALOX` },

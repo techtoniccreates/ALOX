@@ -6,6 +6,8 @@ import { contact } from "@/lib/contact";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Contact — ALOX" },
       { name: "description", content: "Get in touch with ALOX client care for orders, shipping, returns and private appointments." },
       { property: "og:title", content: "Contact — ALOX" },

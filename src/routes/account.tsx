@@ -16,6 +16,8 @@ export const Route = createFileRoute("/account")({
   }),
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Your Account — ALOX" },
       { name: "description", content: "Manage your ALOX orders, wishlist, profile and addresses." },
       { property: "og:title", content: "Your Account — ALOX" },
