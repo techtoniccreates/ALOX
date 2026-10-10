@@ -198,6 +198,24 @@
 @utility animate-slide-x { animation: slide-x .6s var(--ease-out-soft) both; }
 @utility animate-wipe { transform-origin: left; animation: wipe-x 1.2s var(--ease-lux) both; }
 
+/* One-time editorial headline entrance; spacing stays fixed throughout. */
+.hero-headline { letter-spacing: 0; }
+.hero-headline-line { perspective: 900px; }
+.hero-headline-word {
+  display: inline-block;
+  transform-origin: center bottom;
+  animation: headline-unveil 1.5s var(--ease-out-soft) both;
+  animation-delay: .2s;
+}
+.hero-headline-line:first-child .hero-headline-word:nth-child(2) { animation-delay: .32s; }
+.hero-headline-line:first-child .hero-headline-word:nth-child(3) { animation-delay: .44s; }
+.hero-headline-line:nth-child(2) .hero-headline-word:first-child { animation-delay: .58s; }
+.hero-headline-line:nth-child(2) .hero-headline-word:nth-child(2) { animation-delay: .76s; }
+@keyframes headline-unveil {
+  from { opacity: 0; filter: blur(3px); transform: translate3d(0, .55em, 0) rotateX(16deg); }
+  to { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0) rotateX(0); }
+}
+
 /* Hover lift + press for buttons/cards */
 @utility lift {
   transition: transform .5s var(--ease-lux);

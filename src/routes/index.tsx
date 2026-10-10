@@ -38,9 +38,9 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/20 to-transparent" />
         <div className="container-lux relative flex h-full flex-col justify-end pb-16 md:justify-center md:pb-0">
           <p className="eyebrow animate-fade text-gold [animation-delay:200ms]">Autumn / Winter 2026</p>
-          <h1 className="display mt-6 max-w-3xl text-[3.25rem] sm:text-7xl lg:text-[7.5rem]">
-            <span className="block overflow-hidden pb-[0.08em]"><span className="animate-rise block [animation-delay:200ms]">The Art of</span></span>
-            <span className="block overflow-hidden pb-[0.08em]"><span className="animate-rise block [animation-delay:320ms]"><em className="font-light">Modern</em> Luxury</span></span>
+          <h1 aria-label="The Art of Modern Luxury" className="display hero-headline mt-6 max-w-3xl text-[3.25rem] sm:text-7xl lg:text-[7.5rem]">
+            <span aria-hidden="true" className="hero-headline-line block pb-[0.08em]"><span className="hero-headline-word">The</span>{" "}<span className="hero-headline-word">Art</span>{" "}<span className="hero-headline-word">of</span></span>
+            <span aria-hidden="true" className="hero-headline-line block pb-[0.08em]"><em className="hero-headline-word font-light">Modern</em>{" "}<span className="hero-headline-word">Luxury</span></span>
           </h1>
           <p className="animate-fade mt-8 max-w-md text-base leading-relaxed opacity-80 [animation-delay:450ms] [animation-duration:1.2s]">
             Refined essentials designed for those who appreciate quality, simplicity and timeless expression.
