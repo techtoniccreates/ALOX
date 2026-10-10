@@ -10,3 +10,6 @@
 - [x] Contact form saves messages; contact details wired site-wide (placeholders, user to edit)
 - [x] Clothing items + The ALOX Edit looks + Shop the Look + Complete the look
 - [x] Stylist recommends from full catalogue
+- [x] Recently viewed, demo stock levels, product zoom, currency switch, page transitions
+- [ ] Order confirmation emails — waiting on an email domain
+- [ ] Social share images — needs the site published (public image address)

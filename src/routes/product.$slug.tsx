@@ -1,7 +1,10 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Heart, Minus, Plus } from "lucide-react";
-import { formatPrice, getProduct, lookFor, lookProducts, products } from "@/lib/products";
+import { formatPrice, getProduct, lookFor, lookProducts, products, stockFor } from "@/lib/products";
+import { pushRecent } from "@/lib/recent";
+import { ImageZoom } from "@/components/site/ImageZoom";
+import { RecentlyViewed } from "@/components/site/RecentlyViewed";
 import { useStore } from "@/lib/store";
 import { ProductCard } from "@/components/site/ProductCard";
 import { Reveal, Parallax } from "@/components/site/Reveal";
@@ -38,12 +41,17 @@ function ProductPage() {
   const { add, wishlist, toggleWish } = useStore();
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
-  const [option, setOption] = useState<string>(needsSize(p) ? "" : p.options.values[0] ?? "");
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const firstInStock = p.options.values.find((v, i) => stockFor(p.slug, v, i) > 0) ?? "";
+  const [option, setOption] = useState<string>(needsSize(p) ? "" : firstInStock);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [openTab, setOpenTab] = useState<string | null>("Product Details");
   const wished = wishlist.includes(p.slug);
   const related = products.filter((x) => x.slug !== p.slug && x.category === p.category).concat(products.filter((x) => x.category !== p.category)).slice(0, 4);
+  useEffect(() => { pushRecent(p.slug); }, [p.slug]);
+  const left = option ? stockFor(p.slug, option, p.options.values.indexOf(option)) : null;
+  const stockNote = left === null ? null : left <= 3 ? { low: true, text: `Only ${left} left` } : { low: false, text: "In stock — ships in 2–3 days" };
 
   const addToCart = () => {
     if (!option) return;
@@ -72,9 +80,11 @@ function ProductPage() {
                 </Button>
               ))}
             </div>
-            <div className="relative order-1 aspect-[4/5] overflow-hidden bg-ivory md:order-2">
+            <button onClick={() => setZoomOpen(true)} aria-label="Open full-screen image" className="relative order-1 block aspect-[4/5] cursor-zoom-in overflow-hidden bg-ivory md:order-2">
               <Parallax speed={0.035} className="absolute inset-0"><img key={active} src={p.images[active]} alt={p.name} width={896} height={1152} className="animate-fade h-full w-full object-cover" /></Parallax>
-            </div>
+              <span className="eyebrow absolute bottom-4 right-4 bg-background/90 px-2 py-1 text-[10px]">Zoom</span>
+            </button>
+            <ImageZoom open={zoomOpen} onOpenChange={setZoomOpen} src={p.images[active]} alt={p.name} />
           </div>
         </div>
 
@@ -91,13 +101,18 @@ function ProductPage() {
           <div className="mt-10">
             <div className="flex flex-wrap items-center justify-between gap-3"><p className="eyebrow">{p.options.label} — <span className="text-muted-foreground">{option || "Select size"}</span></p><SizeGuide product={p} /></div>
             <div className="mt-4 flex flex-wrap gap-2">
-              {p.options.values.map((v) => (
-                <Button variant="editorial" size="natural" key={v} onClick={() => { setOption(v); setAdded(false); }} aria-pressed={option === v}
-                  className={cn("min-w-14 border px-4 py-2.5 text-sm transition-colors", option === v ? "border-ink bg-ink text-primary-foreground" : "hover:border-ink")}>
-                  {v}
-                </Button>
-              ))}
+              {p.options.values.map((v, i) => {
+                const out = stockFor(p.slug, v, i) === 0;
+                return (
+                  <Button variant="editorial" size="natural" key={v} disabled={out} onClick={() => { setOption(v); setAdded(false); }} aria-pressed={option === v}
+                    aria-label={out ? `${v} — sold out` : v}
+                    className={cn("min-w-14 border px-4 py-2.5 text-sm transition-colors", out && "text-muted-foreground line-through opacity-50", option === v ? "border-ink bg-ink text-primary-foreground" : "hover:border-ink")}>
+                    {v}
+                  </Button>
+                );
+              })}
             </div>
+            {stockNote && <p className={cn("mt-3 text-xs", stockNote.low ? "text-gold" : "text-muted-foreground")}>{stockNote.text}</p>}
           </div>
 
           <div className="mt-8 flex items-center gap-6">
@@ -159,6 +174,7 @@ function ProductPage() {
           {related.map((r) => <ProductCard key={r.slug} product={r} />)}
         </div>
       </section>
+      <RecentlyViewed exclude={p.slug} />
     </>
   );
 }

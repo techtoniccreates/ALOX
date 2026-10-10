@@ -1,3 +1,4 @@
+import { getCurrency } from "@/lib/currency";
 import type { ReactNode } from "react";
 import { formatPrice } from "@/lib/products";
 import { SHIPPING_THRESHOLD } from "@/lib/store";
@@ -12,6 +13,7 @@ export function OrderSummary({ subtotal, shipping, children }: { subtotal: numbe
         <div className="flex justify-between border-t border-ink/15 pt-4 text-base"><dt>Total</dt><dd className="tabular-nums">{formatPrice(subtotal + shipping)}</dd></div>
       </dl>
       {shipping > 0 && <p className="mt-4 text-xs text-muted-foreground">Complimentary shipping on orders over {formatPrice(SHIPPING_THRESHOLD)}.</p>}
+      {getCurrency() !== "GBP" && <p className="mt-4 text-xs text-muted-foreground">Prices shown in {getCurrency()} are approximate; orders are settled in GBP.</p>}
       {children}
     </aside>
   );
