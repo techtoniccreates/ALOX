@@ -1,3 +1,4 @@
+import { currencies, getCurrency } from "./currency";
 import blazer from "@/assets/c-blazer.jpg";
 import shirt from "@/assets/c-shirt.jpg";
 import trousers from "@/assets/c-trousers.jpg";
@@ -306,8 +307,20 @@ export const products: Product[] = [
 
 export const getProduct = (slug: string) => products.find((p) => p.slug === slug);
 
-export const formatPrice = (n: number) =>
-  new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(n);
+export const formatPrice = (n: number) => {
+  const c = getCurrency();
+  const { rate, locale } = currencies[c];
+  const v = c === "NGN" ? Math.round((n * rate) / 1000) * 1000 : Math.round(n * rate);
+  return new Intl.NumberFormat(locale, { style: "currency", currency: c, maximumFractionDigits: 0 }).format(v);
+};
+
+/** Demo stock per size/colour — deterministic so it is stable across visits. */
+export const stockFor = (slug: string, option: string, index: number) => {
+  let h = 0;
+  for (const ch of slug + option) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const n = h % 9;
+  return n === 0 && index === 0 ? 4 : n;
+};
 
 export const editorial = { ed1, ed2, craft };
 
