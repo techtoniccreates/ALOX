@@ -1,3 +1,4 @@
+import { RecentlyViewed } from "@/components/site/RecentlyViewed";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { products } from "@/lib/products";
 import { ProductCard } from "@/components/site/ProductCard";
@@ -87,6 +88,7 @@ function Shop() {
           </div>
         )}
       </section>
+      <RecentlyViewed />
     </>
   );
 }

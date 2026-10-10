@@ -17,6 +17,7 @@ import { StoreProvider } from "@/lib/store";
 import { AuthProvider } from "@/lib/auth";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { loadCurrency, useCurrency } from "@/lib/currency";
 
 function NotFoundComponent() {
   return (
@@ -90,12 +91,14 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const currency = useCurrency();
+  useEffect(() => { loadCurrency(); }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
       <StoreProvider>
-        <Header />
-        <main key={path} className="animate-fade min-h-screen">
+        <Header key={`h-${currency}`} />
+        <main key={`${path}-${currency}`} className="animate-page min-h-screen">
           <Outlet />
         </main>
         <Footer />

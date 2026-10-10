@@ -5,6 +5,7 @@ import { Wordmark } from "./Logo";
 import { useStore } from "@/lib/store";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
+import { currencies, setCurrency, useCurrency, type Currency } from "@/lib/currency";
 
 const nav = [
   { to: "/shop", label: "Collection" },
@@ -17,6 +18,7 @@ const nav = [
 export function Header() {
   const { count, wishlist } = useStore();
   const { user } = useAuth();
+  const cur = useCurrency();
   const [open, setOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const [q, setQ] = useState("");
@@ -60,6 +62,12 @@ export function Header() {
         <Link to="/" aria-label="ALOX home"><Wordmark /></Link>
 
         <div className="flex items-center justify-end gap-4 md:gap-6">
+          <label className="hidden md:block">
+            <span className="sr-only">Currency</span>
+            <select value={cur} onChange={(e) => setCurrency(e.target.value as Currency)} className="eyebrow cursor-pointer bg-transparent outline-none">
+              {(Object.keys(currencies) as Currency[]).map((c) => <option key={c} value={c} className="text-foreground">{c}</option>)}
+            </select>
+          </label>
           <button aria-label="Search" onClick={() => setSearching((s) => !s)}>
             <Search className="h-[18px] w-[18px]" strokeWidth={1.25} />
           </button>
@@ -103,6 +111,11 @@ export function Header() {
             {[{ to: "/about", label: "About" }, ...nav, { to: user ? "/account" : "/auth", label: user ? "Account" : "Sign in" }, { to: "/cart", label: "Bag" }].map((n, i) => (
               <Link key={n.to} to={n.to} className="animate-rise font-serif text-4xl" style={{ animationDelay: `${120 + i * 60}ms`, animationDuration: "0.7s" }}>{n.label}</Link>
             ))}
+            <div className="flex gap-4 pt-4">
+              {(Object.keys(currencies) as Currency[]).map((c) => (
+                <button key={c} onClick={() => setCurrency(c)} aria-pressed={cur === c} className={cn("eyebrow", cur === c ? "text-gold" : "text-muted-foreground")}>{c}</button>
+              ))}
+            </div>
           </nav>
         </div>
       )}
